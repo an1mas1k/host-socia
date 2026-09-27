@@ -5,10 +5,9 @@ const crypto = require('crypto');
 const { parse: parseUrl } = require('url');
 
 const PORT = process.env.PORT || 3000;
-const DATA_DIR = '/data';
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-const POSTS_FILE = path.join(DATA_DIR, 'posts.json');
-const DM_FILE = path.join(DATA_DIR, 'dm.json');
+const USERS_FILE = path.join(__dirname, 'users.json');
+const POSTS_FILE = path.join(__dirname, 'posts.json');
+const DM_FILE = path.join(__dirname, 'dm.json');
 // Аватар/картинка поста (base64 dataURL) до 10 МБ раздувается примерно в ~1.37 раза в JSON,
 // плюс небольшой запас на остальные поля запроса.
 const MAX_BODY_SIZE = 14 * 1024 * 1024;
