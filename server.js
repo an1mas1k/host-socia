@@ -4,10 +4,11 @@ const path = require('path');
 const crypto = require('crypto');
 const { parse: parseUrl } = require('url');
 
-const PORT = 3000;
-const USERS_FILE = path.join(__dirname, 'users.json');
-const POSTS_FILE = path.join(__dirname, 'posts.json');
-const DM_FILE = path.join(__dirname, 'dm.json');
+const PORT = process.env.PORT || 3000;
+const DATA_DIR = '/data';
+const USERS_FILE = path.join(DATA_DIR, 'users.json');
+const POSTS_FILE = path.join(DATA_DIR, 'posts.json');
+const DM_FILE = path.join(DATA_DIR, 'dm.json');
 // Аватар/картинка поста (base64 dataURL) до 10 МБ раздувается примерно в ~1.37 раза в JSON,
 // плюс небольшой запас на остальные поля запроса.
 const MAX_BODY_SIZE = 14 * 1024 * 1024;
@@ -643,7 +644,7 @@ const server = http.createServer(function (req, res) {
     sendJSON(res, 404, { error: 'Не найдено' });
 });
 
-server.listen(PORT, function () {
+server.listen(PORT, '0.0.0.0', function () {
     console.log('');
     console.log('🔥 Сервер Hot запущен!');
     console.log('👉 Открой: http://localhost:' + PORT);
