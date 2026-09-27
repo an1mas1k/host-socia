@@ -1,0 +1,1325 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hot — социальная сеть</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg-dark-1: #070a16; --bg-dark-2: #101126; --bg-dark-3: #090714;
+    --accent-1: #ff24a8; --accent-2: #8e35ff; --accent-3: #ff38c6;
+    --border: #30416c; --border-soft: rgba(255,255,255,0.05); --border-strong: #34466f;
+    --text-primary: #fff; --text-secondary: #9da4c5; --text-muted: #8993b4;
+    --input-bg: rgba(20,29,54,0.82);
+    --card-bg-1: rgba(12,18,38,0.96); --card-bg-2: rgba(5,10,23,0.96);
+    --radius-sm: 13px; --radius-md: 15px; --radius-lg: 17px; --radius-xl: 25px;
+    --shadow-card: 0 0 70px rgba(0,0,0,0.45), 0 0 40px rgba(180,0,255,0.08);
+    --shadow-button: 0 10px 30px rgba(207,28,220,0.28);
+    --transition: 0.25s ease;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    font-family: 'Inter', Arial, sans-serif; min-height: 100vh; color: var(--text-primary);
+    background: radial-gradient(circle at 70% 30%, rgba(150,30,120,0.30), transparent 35%),
+        linear-gradient(120deg, var(--bg-dark-1), var(--bg-dark-2) 50%, var(--bg-dark-3));
+}
+body::before {
+    content:""; position:fixed; inset:0;
+    background: radial-gradient(circle at 20% 70%, rgba(255,0,150,0.12), transparent 30%),
+        radial-gradient(circle at 80% 20%, rgba(100,50,255,0.15), transparent 35%);
+    pointer-events:none; z-index:0;
+}
+header {
+    height:76px; width:100%; display:flex; align-items:center; padding:0 6%;
+    background: rgba(5,8,20,0.88); border-bottom: 1px solid var(--border-soft);
+    position:relative; z-index:10;
+}
+.logo { display:flex; align-items:center; font-size:32px; font-weight:700; margin-right:90px; cursor:pointer; }
+.logo-fire { font-size:38px; margin-right:9px; filter: drop-shadow(0 0 8px #ff1cae); }
+.logo-text { background: linear-gradient(90deg,#fff,#d8d8ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+nav { display:flex; gap:42px; }
+nav a { color: var(--text-secondary); font-size:15px; cursor:pointer; transition: color var(--transition); }
+nav a:hover, nav a.active { color: var(--text-primary); }
+.header-right { margin-left:auto; display:flex; align-items:center; gap:25px; }
+.search { width:250px; height:42px; border-radius:22px; background: rgba(25,30,55,0.8); display:flex; align-items:center; padding:0 17px; font-size:14px; color: var(--text-muted); }
+.search input { background:transparent; border:none; outline:none; color:var(--text-primary); font-size:14px; width:100%; font-family:inherit; }
+.search-icon { font-size:20px; margin-right:10px; }
+.login-top { border:1px solid #34406b; background:transparent; color:#c7cbe4; padding:11px 24px; border-radius: var(--radius-sm); cursor:pointer; font-size:14px; font-family:inherit; }
+.login-top:hover { border-color: var(--accent-1); color:#fff; }
+.user-info { display:flex; align-items:center; gap:15px; cursor:pointer; padding:5px 10px 5px 5px; border-radius:30px; }
+.user-info:hover { background: rgba(255,255,255,0.05); }
+.user-avatar { width:42px; height:42px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:18px; overflow:hidden; flex-shrink:0; }
+.user-avatar img { width:100%; height:100%; object-fit:cover; }
+.user-name { font-size:15px; }
+main { min-height: calc(100vh - 76px); padding:55px 8%; position:relative; z-index:1; }
+.main-auth { display:flex; align-items:center; min-height: calc(100vh - 76px - 110px); }
+.hero { width:48%; padding-left:6%; }
+.hero-logo { display:flex; align-items:center; font-size:72px; font-weight:700; margin-bottom:15px; }
+.hero-fire { font-size:86px; margin-right:20px; filter: drop-shadow(0 0 15px #ff20bb) drop-shadow(0 0 35px #8c20ff); }
+.hero-title { background: linear-gradient(90deg,#fff,#c7bfff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.hero-subtitle { color:#9198b8; font-size:22px; letter-spacing:4px; margin-left:15px; }
+.registration { width:620px; margin-left:auto; background: linear-gradient(145deg,var(--card-bg-1),var(--card-bg-2)); border:1px solid var(--border-strong); border-radius: var(--radius-xl); padding:50px 58px; box-shadow: var(--shadow-card); }
+.registration h1 { font-size:46px; margin-bottom:12px; background: linear-gradient(90deg,#fff,#d890ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.description { color:#9aa4c7; font-size:17px; margin-bottom:35px; }
+.input { height:61px; width:100%; margin-bottom:17px; border-radius: var(--radius-md); border:1px solid var(--border); background: var(--input-bg); color:#fff; font-family:inherit; font-size:16px; padding:0 20px; outline:none; transition: border-color var(--transition); }
+.input::placeholder { color: var(--text-muted); }
+.input:focus { border-color:#bd36ff; box-shadow: 0 0 0 3px rgba(180,40,255,0.12); }
+.input.invalid { border-color:#ff4d6d; }
+.input:disabled { opacity:0.6; }
+.password-wrapper { position:relative; }
+.password-wrapper .input { padding-right:55px; }
+.eye { position:absolute; right:16px; top:50%; transform:translateY(-50%); width:36px; height:36px; display:flex; align-items:center; justify-content:center; color:#aeb9d9; background:transparent; border:none; cursor:pointer; font-size:20px; border-radius:50%; }
+.eye:hover { color:#fff; }
+.register-button { width:100%; height:62px; border:none; border-radius: var(--radius-lg); margin-top:15px; color:#fff; font-family:inherit; font-size:17px; font-weight:700; cursor:pointer; background: linear-gradient(90deg,var(--accent-1),var(--accent-2)); box-shadow: var(--shadow-button); transition: transform var(--transition); }
+.register-button:hover { transform: translateY(-2px); }
+.register-button:disabled { opacity:0.6; cursor:not-allowed; }
+.or { display:flex; align-items:center; gap:15px; margin:30px 0 18px; color:#8992b0; font-size:13px; }
+.or::before, .or::after { content:""; height:1px; flex:1; background:#283451; }
+.social-buttons { display:flex; gap:18px; }
+.social-button { flex:1; height:54px; border-radius: var(--radius-md); border:1px solid #2f3d63; background:#10182d; color:#fff; font-family:inherit; font-size:15px; cursor:pointer; }
+.social-button:hover { border-color:#9340ff; background:#171f3a; }
+.social-button.vk { color:#72a7ff; }
+.already { text-align:center; margin-top:28px; color:#8e97b7; font-size:14px; }
+.already a { color: var(--accent-3); font-weight:700; cursor:pointer; text-decoration:none; }
+.already a:hover { text-decoration:underline; }
+.error-message { color:#ff4d6d; font-size:14px; margin-top:-8px; margin-bottom:10px; min-height:18px; opacity:0; transition: opacity var(--transition); }
+.error-message.visible { opacity:1; }
+.success-message { color:#4ade80; font-size:14px; margin-top:-8px; margin-bottom:10px; min-height:18px; opacity:0; transition: opacity var(--transition); }
+.success-message.visible { opacity:1; }
+.page { display:none; }
+.page.active { display:block; }
+.home-container { max-width:900px; margin:0 auto; }
+.welcome-card { background: linear-gradient(145deg,var(--card-bg-1),var(--card-bg-2)); border:1px solid var(--border-strong); border-radius: var(--radius-xl); padding:50px; box-shadow: var(--shadow-card); text-align:center; }
+.welcome-avatar { width:120px; height:120px; border-radius:50%; margin:0 auto 25px; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-size:52px; font-weight:700; box-shadow: 0 0 40px rgba(207,28,220,0.4); overflow:hidden; }
+.welcome-avatar img { width:100%; height:100%; object-fit:cover; }
+.welcome-card h1 { font-size:42px; margin-bottom:15px; background: linear-gradient(90deg,#fff,#d890ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.welcome-card p { color:#9aa4c7; font-size:17px; margin-bottom:30px; }
+.welcome-actions { display:flex; gap:15px; justify-content:center; flex-wrap:wrap; }
+.btn-secondary { height:54px; padding:0 35px; border:1px solid #34406b; border-radius: var(--radius-md); background:transparent; color:#c7cbe4; font-family:inherit; font-size:15px; cursor:pointer; }
+.btn-secondary:hover { border-color: var(--accent-1); color:#fff; }
+.profile-container { max-width:700px; margin:0 auto; }
+.profile-card { background: linear-gradient(145deg,var(--card-bg-1),var(--card-bg-2)); border:1px solid var(--border-strong); border-radius: var(--radius-xl); padding:50px 58px; box-shadow: var(--shadow-card); }
+.profile-card h1 { font-size:42px; margin-bottom:12px; background: linear-gradient(90deg,#fff,#d890ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.profile-card .description { margin-bottom:40px; }
+.avatar-section { display:flex; align-items:center; gap:30px; margin-bottom:35px; padding-bottom:35px; border-bottom:1px solid var(--border-soft); }
+.avatar-preview { width:110px; height:110px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-size:46px; font-weight:700; overflow:hidden; flex-shrink:0; }
+.avatar-preview img { width:100%; height:100%; object-fit:cover; }
+.avatar-controls { display:flex; flex-direction:column; gap:10px; }
+.avatar-controls > label:first-child { font-size:14px; color: var(--text-muted); }
+.btn-upload { display:inline-block; padding:12px 24px; border-radius: var(--radius-sm); border:1px solid var(--accent-2); background:transparent; color:#fff; font-family:inherit; font-size:14px; cursor:pointer; text-align:center; }
+.btn-upload:hover { background: rgba(142,53,255,0.15); }
+.btn-remove { display:inline-block; padding:10px 24px; border-radius: var(--radius-sm); border:1px solid #34406b; background:transparent; color: var(--text-muted); font-family:inherit; font-size:13px; cursor:pointer; }
+.btn-remove:hover { color:#ff4d6d; border-color:#ff4d6d; }
+.field-label { display:block; font-size:14px; color: var(--text-muted); margin-bottom:8px; margin-left:4px; }
+.field-group { margin-bottom:20px; }
+.field-hint { font-size:13px; color: var(--text-muted); margin-top:-10px; margin-bottom:17px; margin-left:4px; }
+.person-item { display:flex; align-items:center; gap:15px; padding:15px; border-radius: var(--radius-md); background: rgba(20,29,54,0.5); margin-bottom:12px; border:1px solid var(--border-soft); }
+.person-avatar { width:50px; height:50px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px; overflow:hidden; flex-shrink:0; }
+.person-avatar img { width:100%; height:100%; object-fit:cover; }
+.person-info { flex:1; }
+.person-name { font-size:16px; font-weight:600; margin-bottom:3px; }
+.person-date { font-size:13px; color: var(--text-muted); }
+.chat-container { max-width:800px; margin:0 auto; }
+.chat-card { background: linear-gradient(145deg,var(--card-bg-1),var(--card-bg-2)); border:1px solid var(--border-strong); border-radius: var(--radius-xl); padding:40px 45px; box-shadow: var(--shadow-card); display:flex; flex-direction:column; }
+.chat-header { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:6px; }
+.chat-header h1 { font-size:34px; background: linear-gradient(90deg,#fff,#d890ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.chat-messages { height:420px; overflow-y:auto; display:flex; flex-direction:column; gap:14px; padding:20px 5px; margin-bottom:15px; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+.chat-msg { display:flex; gap:12px; align-items:flex-start; }
+.chat-msg.own { flex-direction:row-reverse; }
+.chat-msg-avatar { width:38px; height:38px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:15px; overflow:hidden; flex-shrink:0; }
+.chat-msg-avatar img { width:100%; height:100%; object-fit:cover; }
+.chat-msg-body { max-width:70%; }
+.chat-msg-meta { font-size:12px; color: var(--text-muted); margin-bottom:4px; }
+.chat-msg.own .chat-msg-meta { text-align:right; }
+.chat-msg-bubble { background: rgba(20,29,54,0.82); border:1px solid var(--border); border-radius: var(--radius-md); padding:11px 16px; font-size:15px; line-height:1.4; word-break:break-word; white-space:pre-wrap; }
+.chat-msg.own .chat-msg-bubble { background: linear-gradient(135deg, rgba(255,36,168,0.25), rgba(142,53,255,0.25)); border-color: var(--accent-2); }
+.chat-empty { color:#9aa4c7; text-align:center; padding:20px; }
+.chat-input-row { display:flex; gap:12px; }
+.chat-input { flex:1; margin-bottom:0; height:56px; }
+.chat-send-btn { width:auto; padding:0 30px; height:56px; margin-top:0; flex-shrink:0; }
+@media (max-width: 650px) {
+    .chat-card { padding:25px 20px; }
+    .chat-messages { height:340px; }
+    .chat-msg-body { max-width:82%; }
+}
+.handle-input-wrap { position:relative; }
+.handle-prefix { position:absolute; left:20px; top:50%; transform:translateY(-50%); color: var(--text-muted); font-size:16px; pointer-events:none; }
+.handle-input { padding-left:34px; }
+.wall-container { max-width:800px; margin:0 auto; }
+.wall-card { background: linear-gradient(145deg,var(--card-bg-1),var(--card-bg-2)); border:1px solid var(--border-strong); border-radius: var(--radius-xl); padding:40px 45px; box-shadow: var(--shadow-card); }
+.wall-top { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:20px; }
+.wall-top h1 { font-size:34px; background: linear-gradient(90deg,#fff,#d890ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+.wall-search { display:flex; gap:12px; margin-bottom:10px; }
+.wall-search-input { flex:1; margin-bottom:0; height:52px; }
+.wall-search-btn { padding:0 26px; }
+.wall-search-results { margin-bottom:6px; }
+.wall-search-item { display:flex; align-items:center; gap:15px; padding:12px; border-radius: var(--radius-md); background: rgba(20,29,54,0.5); margin-bottom:10px; border:1px solid var(--border-soft); cursor:pointer; transition: border-color var(--transition); }
+.wall-search-item:hover { border-color: var(--accent-2); }
+.wall-profile-header { display:flex; align-items:center; gap:20px; padding:20px 0; margin:10px 0 20px; border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); }
+.wall-profile-avatar { width:70px; height:70px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; overflow:hidden; flex-shrink:0; }
+.wall-profile-avatar img { width:100%; height:100%; object-fit:cover; }
+.wall-profile-meta { flex:1; min-width:0; }
+.wall-profile-name { font-size:20px; font-weight:700; }
+.wall-profile-handle { font-size:14px; color: var(--text-muted); }
+.wall-message-btn { flex-shrink:0; }
+.wall-post-form { padding-bottom:25px; border-bottom:1px solid var(--border-soft); margin-bottom:25px; }
+.wall-post-textarea { height:90px; padding:16px 20px; resize:vertical; font-family:inherit; font-size:15px; line-height:1.4; }
+.wall-post-image-preview:empty { display:none; }
+.wall-post-image-preview { position:relative; display:inline-block; margin-bottom:14px; }
+.wall-post-image-preview img { max-width:220px; max-height:220px; border-radius: var(--radius-md); border:1px solid var(--border); display:block; }
+.wall-image-remove { position:absolute; top:-10px; right:-10px; width:28px; height:28px; border-radius:50%; border:none; background:#ff4d6d; color:#fff; cursor:pointer; font-size:14px; }
+.wall-post-actions { display:flex; align-items:center; justify-content:space-between; gap:15px; flex-wrap:wrap; }
+.wall-post-submit { width:auto; padding:0 30px; height:52px; margin-top:0; }
+.wall-posts { display:flex; flex-direction:column; gap:18px; }
+.wall-post { background: rgba(20,29,54,0.5); border:1px solid var(--border-soft); border-radius: var(--radius-md); padding:18px 20px; }
+.wall-post-head { display:flex; align-items:center; gap:12px; margin-bottom:12px; }
+.wall-post-avatar { width:42px; height:42px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; overflow:hidden; flex-shrink:0; }
+.wall-post-avatar img { width:100%; height:100%; object-fit:cover; }
+.wall-post-author { font-size:15px; font-weight:600; }
+.wall-post-date { font-size:12px; color: var(--text-muted); }
+.wall-post-text { font-size:15px; line-height:1.5; white-space:pre-wrap; word-break:break-word; margin-bottom:10px; }
+.wall-post-image img { max-width:100%; border-radius: var(--radius-md); display:block; }
+.wall-post-delete { margin-top:12px; padding:7px 16px; border-radius: var(--radius-sm); border:1px solid #34406b; background:transparent; color: var(--text-muted); font-family:inherit; font-size:13px; cursor:pointer; }
+.wall-post-delete:hover { color:#ff4d6d; border-color:#ff4d6d; }
+.dm-partner { display:flex; align-items:center; gap:12px; }
+.dm-partner .wall-profile-avatar { width:42px; height:42px; font-size:17px; }
+.dm-partner .wall-profile-name { font-size:19px; }
+@media (max-width: 650px) {
+    .wall-card { padding:25px 20px; }
+    .wall-post-actions { flex-direction:column; align-items:stretch; }
+    .wall-post-submit { width:100%; }
+}
+.header-settings-btn { background:none; border:none; color: var(--text-muted); font-size:17px; cursor:pointer; padding:4px 6px; border-radius: var(--radius-sm); line-height:1; transition: color var(--transition), background var(--transition); }
+.header-settings-btn:hover { color:#fff; background: rgba(255,255,255,0.08); }
+.nav-badge { display:inline-flex; align-items:center; justify-content:center; min-width:16px; height:16px; padding:0 4px; border-radius:9px; background:#ff4d6d; color:#fff; font-size:10px; font-weight:700; margin-left:6px; vertical-align:middle; line-height:1; }
+.nav-badge.hidden { display:none; }
+.messages-list { display:flex; flex-direction:column; gap:10px; }
+.message-row { display:flex; align-items:center; gap:14px; padding:14px; border-radius: var(--radius-md); background: rgba(20,29,54,0.5); border:1px solid var(--border-soft); cursor:pointer; transition: border-color var(--transition); }
+.message-row:hover { border-color: var(--accent-2); }
+.message-row.unread { border-color: var(--accent-2); background: rgba(142,53,255,0.12); }
+.message-row-avatar { width:50px; height:50px; border-radius:50%; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:19px; overflow:hidden; flex-shrink:0; }
+.message-row-avatar img { width:100%; height:100%; object-fit:cover; }
+.message-row-body { flex:1; min-width:0; }
+.message-row-top { display:flex; justify-content:space-between; gap:10px; }
+.message-row-name { font-size:15px; font-weight:600; }
+.message-row-time { font-size:12px; color: var(--text-muted); flex-shrink:0; }
+.message-row-preview { font-size:13px; color: var(--text-muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:3px; }
+.message-row.unread .message-row-preview { color:#fff; font-weight:600; }
+.message-row-unread-count { flex-shrink:0; min-width:20px; height:20px; padding:0 6px; border-radius:10px; background: linear-gradient(135deg,var(--accent-1),var(--accent-2)); color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; }
+.hidden { display:none !important; }
+@media (max-width: 1100px) {
+    nav { display:none; }
+    .hero { display:none; }
+    .main-auth { justify-content:center; }
+    .registration { margin:0; }
+}
+@media (max-width: 650px) {
+    header { padding:0 20px; }
+    .search { display:none; }
+    .logo { margin:0; }
+    main { padding:20px; }
+    .registration, .profile-card, .welcome-card { width:100%; padding:35px 25px; }
+    .avatar-section { flex-direction:column; text-align:center; }
+}
+</style>
+</head>
+<body>
+
+<header>
+    <a class="logo" id="logo-link">
+        <span class="logo-fire">🔥</span>
+        <span class="logo-text">Hot</span>
+    </a>
+    <nav id="main-nav">
+        <a id="nav-home" class="active">Главная</a>
+        <a id="nav-people">Люди</a>
+        <a id="nav-wall">Страница</a>
+        <a id="nav-messages">Сообщения<span class="nav-badge hidden" id="nav-messages-badge">0</span></a>
+    </nav>
+    <div class="header-right">
+        <div class="search">
+            <span class="search-icon">⌕</span>
+            <input type="search" placeholder="Поиск..." disabled>
+        </div>
+        <button type="button" class="login-top" id="header-login-btn">Войти</button>
+        <div class="user-info hidden" id="header-user">
+            <div class="user-avatar" id="header-avatar">?</div>
+            <span class="user-name" id="header-username"></span>
+            <button type="button" class="header-settings-btn" id="header-settings-btn" title="Настройки">⚙️</button>
+        </div>
+    </div>
+</header>
+
+<main>
+
+<div class="page active" id="page-auth">
+    <div class="main-auth">
+        <section class="hero">
+            <div class="hero-logo">
+                <span class="hero-fire">🔥</span>
+                <span class="hero-title">Hot</span>
+            </div>
+            <p class="hero-subtitle">Социальная сеть</p>
+        </section>
+        <section class="registration">
+            <h1 id="auth-title">Регистрация</h1>
+            <p class="description" id="auth-description">Создай аккаунт и начни общаться</p>
+            <form id="register-form" novalidate>
+                <input id="username" class="input" type="text" placeholder="Имя пользователя" minlength="3" maxlength="20">
+                <input id="email" class="input" type="email" placeholder="Почта">
+                <div class="password-wrapper">
+                    <input id="password" class="input" type="password" placeholder="Пароль">
+                    <button type="button" class="eye" data-target="password">◉</button>
+                </div>
+                <div class="password-wrapper" id="password2-wrapper">
+                    <input id="password2" class="input" type="password" placeholder="Повторите пароль">
+                    <button type="button" class="eye" data-target="password2">◉</button>
+                </div>
+                <p id="error" class="error-message"></p>
+                <button type="submit" class="register-button" id="submit-btn">Создать аккаунт →</button>
+            </form>
+            <div class="or" id="or-divider">или</div>
+            <div class="social-buttons" id="social-block">
+                <button type="button" class="social-button">Google</button>
+                <button type="button" class="social-button vk">VK</button>
+            </div>
+            <p class="already" id="switch-line">Уже есть аккаунт? <a id="switch-mode">Войти</a></p>
+        </section>
+    </div>
+</div>
+
+<div class="page" id="page-home">
+    <div class="home-container">
+        <div class="welcome-card">
+            <div class="welcome-avatar" id="home-avatar">?</div>
+            <h1 id="home-title">Привет!</h1>
+            <p id="home-text">Ты успешно вошёл в Hot</p>
+            <div class="welcome-actions">
+                <button type="button" class="btn-secondary" id="home-wall-btn">Страница</button>
+                <button type="button" class="btn-secondary" id="home-messages-btn">Сообщения<span class="nav-badge hidden" id="home-messages-badge">0</span></button>
+                <button type="button" class="btn-secondary" id="home-logout-btn">Выйти</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page-profile">
+    <div class="profile-container">
+        <div class="profile-card">
+            <h1>Настройки профиля</h1>
+            <p class="description">Измени свой ник и аватар</p>
+            <form id="profile-form" novalidate>
+                <div class="avatar-section">
+                    <div class="avatar-preview" id="profile-avatar-preview">?</div>
+                    <div class="avatar-controls">
+                        <label>Аватар (JPG, PNG, до 10 МБ)</label>
+                        <label class="btn-upload" for="avatar-input">Загрузить картинку</label>
+                        <input type="file" id="avatar-input" accept="image/*" style="display:none;">
+                        <button type="button" class="btn-remove" id="avatar-remove-btn">Удалить аватар</button>
+                    </div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Ник</label>
+                    <input id="profile-username" class="input" type="text" minlength="3" maxlength="20">
+                    <div class="field-hint">От 3 до 20 символов</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Юзернейм (для поиска)</label>
+                    <div class="handle-input-wrap">
+                        <span class="handle-prefix">@</span>
+                        <input id="profile-handle" class="input handle-input" type="text" placeholder="an1mas1k" maxlength="20">
+                    </div>
+                    <div class="field-hint">Латиница, цифры и _, от 3 до 20 символов. Необязательно.</div>
+                </div>
+                <div class="field-group">
+                    <label class="field-label">Email</label>
+                    <input id="profile-email" class="input" type="email" disabled>
+                    <div class="field-hint">Email изменить нельзя</div>
+                </div>
+                <p id="profile-error" class="error-message"></p>
+                <p id="profile-success" class="success-message"></p>
+                <button type="submit" class="register-button" id="profile-submit-btn">Сохранить изменения</button>
+                <div style="margin-top:20px; text-align:center;">
+                    <button type="button" class="btn-secondary" id="profile-back-btn">Назад на главную</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page-people">
+    <div class="profile-container">
+        <div class="profile-card">
+            <h1>Люди</h1>
+            <p class="description">Все, кто зарегистрирован в Hot</p>
+            <div id="people-list"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page-wall">
+    <div class="wall-container">
+        <div class="wall-card">
+            <div class="wall-top">
+                <h1>Страница</h1>
+                <button type="button" class="btn-secondary" id="wall-back-btn">На главную</button>
+            </div>
+            <div class="wall-search">
+                <input id="wall-search-input" class="input wall-search-input" type="text" placeholder="Найти по @юзернейму или имени...">
+                <button type="button" class="btn-upload wall-search-btn" id="wall-search-btn">Найти</button>
+            </div>
+            <div id="wall-search-results" class="wall-search-results"></div>
+
+            <div id="wall-profile-header" class="wall-profile-header"></div>
+
+            <form id="wall-post-form" class="wall-post-form hidden">
+                <textarea id="wall-post-text" class="input wall-post-textarea" placeholder="Что нового?" maxlength="3000"></textarea>
+                <div id="wall-post-image-preview" class="wall-post-image-preview"></div>
+                <div class="wall-post-actions">
+                    <div>
+                        <label class="btn-upload" for="wall-post-image-input">Добавить картинку</label>
+                        <input type="file" id="wall-post-image-input" accept="image/*" style="display:none;">
+                    </div>
+                    <button type="submit" class="register-button wall-post-submit" id="wall-post-submit-btn">Опубликовать</button>
+                </div>
+                <p id="wall-post-error" class="error-message"></p>
+            </form>
+
+            <div id="wall-posts" class="wall-posts"></div>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page-dm">
+    <div class="chat-container">
+        <div class="chat-card">
+            <div class="chat-header">
+                <div class="dm-partner" id="dm-partner-info"></div>
+                <button type="button" class="btn-secondary" id="dm-back-btn">Назад</button>
+            </div>
+            <div class="chat-messages" id="dm-messages"></div>
+            <form id="dm-form" class="chat-input-row" autocomplete="off">
+                <input id="dm-input" class="input chat-input" type="text" placeholder="Написать сообщение..." maxlength="2000">
+                <button type="submit" class="register-button chat-send-btn" id="dm-send-btn">Отправить</button>
+            </form>
+            <p id="dm-error" class="error-message"></p>
+        </div>
+    </div>
+</div>
+
+<div class="page" id="page-messages">
+    <div class="wall-container">
+        <div class="wall-card">
+            <div class="wall-top">
+                <h1>Сообщения</h1>
+                <button type="button" class="btn-secondary" id="messages-back-btn">На главную</button>
+            </div>
+            <div id="messages-list" class="messages-list"></div>
+        </div>
+    </div>
+</div>
+
+</main>
+
+<script>
+(function () {
+    'use strict';
+
+    var API = '';
+    var STORAGE_SESSION = 'hot_session';
+    var MAX_AVATAR_SIZE = 10 * 1024 * 1024;
+    var AVATAR_DIMENSION = 200;
+
+    var currentUser = null;
+    var pendingAvatar = null;
+
+    function getSession() { return localStorage.getItem(STORAGE_SESSION); }
+    function setSession(u) { localStorage.setItem(STORAGE_SESSION, u); }
+    function clearSession() { localStorage.removeItem(STORAGE_SESSION); }
+
+    function apiPost(path, data) {
+        return fetch(API + path, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(function (res) {
+            return res.json().then(function (json) {
+                if (!res.ok) throw new Error(json.error || 'Ошибка');
+                return json;
+            });
+        });
+    }
+
+    function apiGet(path) {
+        return fetch(API + path).then(function (res) { return res.json(); });
+    }
+
+    function apiDelete(path) {
+        return fetch(API + path, { method: 'DELETE' }).then(function (res) {
+            return res.json().then(function (json) {
+                if (!res.ok) throw new Error(json.error || 'Ошибка');
+                return json;
+            });
+        });
+    }
+
+    var pageAuth = document.getElementById('page-auth');
+    var pageHome = document.getElementById('page-home');
+    var pageProfile = document.getElementById('page-profile');
+    var pagePeople = document.getElementById('page-people');
+    var pageWall = document.getElementById('page-wall');
+    var pageDm = document.getElementById('page-dm');
+    var pageMessages = document.getElementById('page-messages');
+    var navHome = document.getElementById('nav-home');
+    var navPeople = document.getElementById('nav-people');
+    var navWall = document.getElementById('nav-wall');
+    var navMessages = document.getElementById('nav-messages');
+    var navMessagesBadge = document.getElementById('nav-messages-badge');
+    var mainNav = document.getElementById('main-nav');
+    var headerLoginBtn = document.getElementById('header-login-btn');
+    var headerUser = document.getElementById('header-user');
+    var headerAvatar = document.getElementById('header-avatar');
+    var headerUsername = document.getElementById('header-username');
+    var headerSettingsBtn = document.getElementById('header-settings-btn');
+    var authTitle = document.getElementById('auth-title');
+    var authDescription = document.getElementById('auth-description');
+    var submitBtn = document.getElementById('submit-btn');
+    var form = document.getElementById('register-form');
+    var usernameInput = document.getElementById('username');
+    var emailInput = document.getElementById('email');
+    var passwordInput = document.getElementById('password');
+    var password2Input = document.getElementById('password2');
+    var password2Wrapper = document.getElementById('password2-wrapper');
+    var errorEl = document.getElementById('error');
+    var switchLine = document.getElementById('switch-line');
+    var orDivider = document.getElementById('or-divider');
+    var socialBlock = document.getElementById('social-block');
+    var homeAvatar = document.getElementById('home-avatar');
+    var homeTitle = document.getElementById('home-title');
+    var homeText = document.getElementById('home-text');
+    var homeLogoutBtn = document.getElementById('home-logout-btn');
+    var homeWallBtn = document.getElementById('home-wall-btn');
+    var profileForm = document.getElementById('profile-form');
+    var profileAvatarPreview = document.getElementById('profile-avatar-preview');
+    var profileUsername = document.getElementById('profile-username');
+    var profileHandle = document.getElementById('profile-handle');
+    var profileEmail = document.getElementById('profile-email');
+    var avatarInput = document.getElementById('avatar-input');
+    var avatarRemoveBtn = document.getElementById('avatar-remove-btn');
+    var profileError = document.getElementById('profile-error');
+    var profileSuccess = document.getElementById('profile-success');
+    var profileSubmitBtn = document.getElementById('profile-submit-btn');
+    var profileBackBtn = document.getElementById('profile-back-btn');
+    var peopleList = document.getElementById('people-list');
+
+    var wallBackBtn = document.getElementById('wall-back-btn');
+    var wallSearchInput = document.getElementById('wall-search-input');
+    var wallSearchBtn = document.getElementById('wall-search-btn');
+    var wallSearchResults = document.getElementById('wall-search-results');
+    var wallProfileHeader = document.getElementById('wall-profile-header');
+    var wallPostForm = document.getElementById('wall-post-form');
+    var wallPostText = document.getElementById('wall-post-text');
+    var wallPostImageInput = document.getElementById('wall-post-image-input');
+    var wallPostImagePreview = document.getElementById('wall-post-image-preview');
+    var wallPostError = document.getElementById('wall-post-error');
+    var wallPostSubmitBtn = document.getElementById('wall-post-submit-btn');
+    var wallPostsEl = document.getElementById('wall-posts');
+    var wallViewingUsername = null;
+    var pendingWallImage = '';
+    var MAX_POST_IMAGE_SIZE = 10 * 1024 * 1024;
+    var POST_IMAGE_MAX_DIM = 1280;
+
+    var dmPartnerInfo = document.getElementById('dm-partner-info');
+    var dmMessagesEl = document.getElementById('dm-messages');
+    var dmForm = document.getElementById('dm-form');
+    var dmInput = document.getElementById('dm-input');
+    var dmError = document.getElementById('dm-error');
+    var dmSendBtn = document.getElementById('dm-send-btn');
+    var dmBackBtn = document.getElementById('dm-back-btn');
+    var dmPartner = null;
+    var dmReturnTo = 'wall';
+    var dmPollTimer = null;
+    var dmLastMessageId = null;
+
+    var homeMessagesBtn = document.getElementById('home-messages-btn');
+    var homeMessagesBadge = document.getElementById('home-messages-badge');
+    var messagesBackBtn = document.getElementById('messages-back-btn');
+    var messagesListEl = document.getElementById('messages-list');
+    var unreadPollTimer = null;
+
+    var mode = 'register';
+
+    function showError(m, f) {
+        errorEl.textContent = m;
+        errorEl.classList.add('visible');
+        if (f) { f.classList.add('invalid'); f.focus(); }
+    }
+    function clearErrors() {
+        errorEl.textContent = '';
+        errorEl.classList.remove('visible');
+        var inv = form.querySelectorAll('.invalid');
+        for (var i = 0; i < inv.length; i++) inv[i].classList.remove('invalid');
+    }
+    function setLoading(l) {
+        submitBtn.disabled = l;
+        submitBtn.textContent = l ? 'Подождите...' : (mode === 'register' ? 'Создать аккаунт →' : 'Войти →');
+    }
+    function getInitial(n) { return n ? n.charAt(0).toUpperCase() : '?'; }
+    function escapeHtml(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+    }
+    function avatarHTML(u) {
+        if (u && u.avatar) return '<img src="' + u.avatar + '" alt="">';
+        return getInitial(u ? u.username : '');
+    }
+    function bindSwitch() {
+        var el = document.getElementById('switch-mode');
+        if (!el) return;
+        el.addEventListener('click', toggleMode);
+    }
+
+    function showPage(name) {
+        pageAuth.classList.remove('active');
+        pageHome.classList.remove('active');
+        pageProfile.classList.remove('active');
+        pagePeople.classList.remove('active');
+        pageWall.classList.remove('active');
+        pageDm.classList.remove('active');
+        pageMessages.classList.remove('active');
+        navHome.classList.remove('active');
+        navPeople.classList.remove('active');
+        navWall.classList.remove('active');
+        navMessages.classList.remove('active');
+
+        if (name !== 'dm') {
+            stopDmPolling();
+        }
+
+        if (name === 'auth') {
+            pageAuth.classList.add('active');
+            mainNav.classList.add('hidden');
+            return;
+        }
+        mainNav.classList.remove('hidden');
+        if (name === 'home') { pageHome.classList.add('active'); navHome.classList.add('active'); }
+        else if (name === 'profile') { pageProfile.classList.add('active'); }
+        else if (name === 'people') { pagePeople.classList.add('active'); navPeople.classList.add('active'); }
+        else if (name === 'wall') { pageWall.classList.add('active'); navWall.classList.add('active'); }
+        else if (name === 'dm') { pageDm.classList.add('active'); }
+        else if (name === 'messages') { pageMessages.classList.add('active'); navMessages.classList.add('active'); }
+    }
+
+    function setMode(m) {
+        mode = m;
+        clearErrors();
+        form.reset();
+        if (mode === 'register') {
+            authTitle.textContent = 'Регистрация';
+            authDescription.textContent = 'Создай аккаунт и начни общаться';
+            submitBtn.textContent = 'Создать аккаунт →';
+            usernameInput.classList.remove('hidden');
+            emailInput.placeholder = 'Почта';
+            password2Wrapper.classList.remove('hidden');
+            orDivider.classList.remove('hidden');
+            socialBlock.classList.remove('hidden');
+            switchLine.innerHTML = 'Уже есть аккаунт? <a id="switch-mode">Войти</a>';
+        } else {
+            authTitle.textContent = 'Вход';
+            authDescription.textContent = 'Войди в свой аккаунт';
+            submitBtn.textContent = 'Войти →';
+            usernameInput.classList.add('hidden');
+            emailInput.placeholder = 'Имя или почта';
+            password2Wrapper.classList.add('hidden');
+            orDivider.classList.add('hidden');
+            socialBlock.classList.add('hidden');
+            switchLine.innerHTML = 'Нет аккаунта? <a id="switch-mode">Зарегистрироваться</a>';
+        }
+        bindSwitch();
+    }
+
+    function toggleMode() { setMode(mode === 'register' ? 'login' : 'register'); }
+
+    function updateHeader(u) {
+        if (u) {
+            headerLoginBtn.classList.add('hidden');
+            headerUser.classList.remove('hidden');
+            headerAvatar.innerHTML = avatarHTML(u);
+            headerUsername.textContent = u.username;
+        } else {
+            headerLoginBtn.classList.remove('hidden');
+            headerUser.classList.add('hidden');
+        }
+    }
+    function updateHome(u) {
+        homeAvatar.innerHTML = avatarHTML(u);
+        homeTitle.textContent = 'Привет, ' + u.username + '!';
+        homeText.textContent = 'Рад видеть тебя в Hot';
+    }
+    function updateProfile(u) {
+        profileAvatarPreview.innerHTML = avatarHTML(u);
+        profileUsername.value = u.username;
+        profileHandle.value = u.handle || '';
+        profileEmail.value = u.email;
+        pendingAvatar = null;
+    }
+
+    function resizeImage(file, cb) {
+        var r = new FileReader();
+        r.onload = function (e) {
+            var img = new Image();
+            img.onload = function () {
+                var c = document.createElement('canvas');
+                c.width = AVATAR_DIMENSION; c.height = AVATAR_DIMENSION;
+                var ctx = c.getContext('2d');
+                var min = Math.min(img.width, img.height);
+                ctx.drawImage(img, (img.width - min) / 2, (img.height - min) / 2, min, min, 0, 0, AVATAR_DIMENSION, AVATAR_DIMENSION);
+                cb(c.toDataURL('image/jpeg', 0.85));
+            };
+            img.onerror = function () { cb(null); };
+            img.src = e.target.result;
+        };
+        r.onerror = function () { cb(null); };
+        r.readAsDataURL(file);
+    }
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        clearErrors();
+        var email = emailInput.value.trim();
+        var password = passwordInput.value;
+
+        if (mode === 'register') {
+            var username = usernameInput.value.trim();
+            var password2 = password2Input.value;
+            if (username.length < 3) return showError('Имя — минимум 3', usernameInput);
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showError('Некорректный email', emailInput);
+            if (password.length < 6) return showError('Пароль — минимум 6', passwordInput);
+            if (password !== password2) return showError('Пароли не совпадают', password2Input);
+
+            setLoading(true);
+            apiPost('/api/register', { username: username, email: email, password: password })
+                .then(function (u) {
+                    currentUser = u;
+                    setSession(u.username);
+                    updateHeader(u); updateHome(u); updateProfile(u);
+                    showPage('home');
+                    startUnreadPolling();
+                }).catch(function (e) { showError(e.message); })
+                .then(function () { setLoading(false); });
+        } else {
+            if (!email) return showError('Введите имя или почту', emailInput);
+            if (password.length < 1) return showError('Введите пароль', passwordInput);
+
+            setLoading(true);
+            apiPost('/api/login', { login: email, password: password })
+                .then(function (u) {
+                    currentUser = u;
+                    setSession(u.username);
+                    updateHeader(u); updateHome(u); updateProfile(u);
+                    showPage('home');
+                    startUnreadPolling();
+                }).catch(function (e) { showError(e.message); })
+                .then(function () { setLoading(false); });
+        }
+    });
+
+    profileForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        profileError.classList.remove('visible');
+        profileSuccess.classList.remove('visible');
+        if (!currentUser) return;
+
+        var newUsername = profileUsername.value.trim();
+        if (newUsername.length < 3 || newUsername.length > 20) {
+            profileError.textContent = 'Ник от 3 до 20';
+            profileError.classList.add('visible');
+            return;
+        }
+        var newHandle = profileHandle.value.trim().replace(/^@+/, '');
+        if (newHandle && !/^[a-zA-Z0-9_]{3,20}$/.test(newHandle)) {
+            profileError.textContent = 'Юзернейм: 3-20 символов, латиница, цифры и _';
+            profileError.classList.add('visible');
+            return;
+        }
+        var payload = { currentUsername: currentUser.username, newUsername: newUsername, handle: newHandle };
+        if (pendingAvatar !== null) payload.avatar = pendingAvatar;
+
+        profileSubmitBtn.disabled = true;
+        profileSubmitBtn.textContent = 'Сохраняем...';
+
+        apiPost('/api/update-profile', payload).then(function (u) {
+            currentUser = u;
+            setSession(u.username);
+            updateHeader(u); updateHome(u); updateProfile(u);
+            profileSuccess.textContent = 'Профиль сохранён!';
+            profileSuccess.classList.add('visible');
+            setTimeout(function () { profileSuccess.classList.remove('visible'); }, 2500);
+        }).catch(function (e) {
+            profileError.textContent = e.message;
+            profileError.classList.add('visible');
+        }).then(function () {
+            profileSubmitBtn.disabled = false;
+            profileSubmitBtn.textContent = 'Сохранить изменения';
+        });
+    });
+
+    avatarInput.addEventListener('change', function (e) {
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (file.size > MAX_AVATAR_SIZE) {
+            profileError.textContent = 'Файл больше 10 МБ';
+            profileError.classList.add('visible');
+            avatarInput.value = '';
+            return;
+        }
+        profileError.classList.remove('visible');
+        resizeImage(file, function (dataURL) {
+            if (!dataURL) {
+                profileError.textContent = 'Не удалось загрузить';
+                profileError.classList.add('visible');
+                return;
+            }
+            pendingAvatar = dataURL;
+            profileAvatarPreview.innerHTML = '<img src="' + dataURL + '" alt="">';
+        });
+    });
+
+    avatarRemoveBtn.addEventListener('click', function () {
+        pendingAvatar = '';
+        profileAvatarPreview.innerHTML = getInitial(currentUser ? currentUser.username : '?');
+    });
+
+    function logout() {
+        clearSession();
+        currentUser = null;
+        wallViewingUsername = null;
+        dmPartner = null;
+        stopUnreadPolling();
+        updateHeader(null);
+        setMode('register');
+        showPage('auth');
+    }
+
+    homeLogoutBtn.addEventListener('click', logout);
+    headerLoginBtn.addEventListener('click', function () { setMode('login'); showPage('auth'); });
+    navHome.addEventListener('click', function () { if (currentUser) showPage('home'); });
+    navPeople.addEventListener('click', function () { if (currentUser) { showPage('people'); loadPeople(); } });
+    navWall.addEventListener('click', function () { if (currentUser) openWall(currentUser.username); });
+    navMessages.addEventListener('click', function () { if (currentUser) { showPage('messages'); loadMessagesList(); loadUnreadCount(); } });
+    homeWallBtn.addEventListener('click', function () { if (currentUser) openWall(currentUser.username); });
+    homeMessagesBtn.addEventListener('click', function () { if (currentUser) { showPage('messages'); loadMessagesList(); loadUnreadCount(); } });
+    messagesBackBtn.addEventListener('click', function () { showPage('home'); });
+    profileBackBtn.addEventListener('click', function () { showPage('home'); });
+    headerSettingsBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        if (currentUser) { updateProfile(currentUser); showPage('profile'); }
+    });
+    headerUser.addEventListener('click', function () { if (currentUser) openWall(currentUser.username); });
+
+    function loadPeople() {
+        peopleList.innerHTML = '<p style="color:#9aa4c7;">Загрузка...</p>';
+        apiGet('/api/users').then(function (data) {
+            if (!data.users || data.users.length === 0) {
+                peopleList.innerHTML = '<p style="color:#9aa4c7;">Пока никого нет</p>';
+                return;
+            }
+            var html = '';
+            for (var i = 0; i < data.users.length; i++) {
+                var u = data.users[i];
+                var av = u.avatar ? '<img src="' + u.avatar + '" alt="">' : getInitial(u.username);
+                var date = u.createdAt ? 'С нами с ' + new Date(u.createdAt).toLocaleDateString('ru-RU') : '';
+                html += '<div class="person-item" data-username="' + escapeHtml(u.username) + '" style="cursor:pointer;"><div class="person-avatar">' + av + '</div>'
+                    + '<div class="person-info"><div class="person-name">' + escapeHtml(u.username) + (u.handle ? ' <span style="color:var(--text-muted);font-weight:400;">@' + escapeHtml(u.handle) + '</span>' : '') + '</div>'
+                    + '<div class="person-date">' + date + '</div></div></div>';
+            }
+            peopleList.innerHTML = html;
+            var items = peopleList.querySelectorAll('.person-item');
+            for (var j = 0; j < items.length; j++) {
+                items[j].addEventListener('click', function (e) {
+                    var uname = e.currentTarget.getAttribute('data-username');
+                    if (uname) openWall(uname);
+                });
+            }
+        }).catch(function () {
+            peopleList.innerHTML = '<p style="color:#ff4d6d;">Ошибка</p>';
+        });
+    }
+
+    function formatChatTime(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        var hh = ('0' + d.getHours()).slice(-2);
+        var mm = ('0' + d.getMinutes()).slice(-2);
+        return hh + ':' + mm;
+    }
+
+    /* ---------- Страница (посты) ---------- */
+
+    function resizeImageFit(file, maxDim, cb) {
+        var r = new FileReader();
+        r.onload = function (e) {
+            var img = new Image();
+            img.onload = function () {
+                var w = img.width, h = img.height;
+                var scale = Math.min(1, maxDim / Math.max(w, h));
+                var cw = Math.max(1, Math.round(w * scale));
+                var ch = Math.max(1, Math.round(h * scale));
+                var c = document.createElement('canvas');
+                c.width = cw; c.height = ch;
+                var ctx = c.getContext('2d');
+                ctx.drawImage(img, 0, 0, cw, ch);
+                cb(c.toDataURL('image/jpeg', 0.85));
+            };
+            img.onerror = function () { cb(null); };
+            img.src = e.target.result;
+        };
+        r.onerror = function () { cb(null); };
+        r.readAsDataURL(file);
+    }
+
+    function openWall(username) {
+        if (!currentUser || !username) return;
+        wallViewingUsername = username;
+        wallSearchInput.value = '';
+        wallSearchResults.innerHTML = '';
+        showPage('wall');
+        loadWallProfile(username);
+    }
+
+    function renderWallProfileHeader(user, isOwn) {
+        var handleLine = user.handle ? '@' + escapeHtml(user.handle) : '';
+        var html = '<div class="wall-profile-avatar">' + avatarHTML(user) + '</div>'
+            + '<div class="wall-profile-meta">'
+            + '<div class="wall-profile-name">' + escapeHtml(user.username) + '</div>'
+            + (handleLine ? '<div class="wall-profile-handle">' + handleLine + '</div>' : '')
+            + '</div>';
+        if (!isOwn) {
+            html += '<button type="button" class="btn-upload wall-message-btn" id="wall-message-btn">Написать сообщение</button>';
+        }
+        wallProfileHeader.innerHTML = html;
+        if (!isOwn) {
+            var btn = document.getElementById('wall-message-btn');
+            if (btn) btn.addEventListener('click', function () { openDm(user); });
+        }
+    }
+
+    function loadWallProfile(username) {
+        wallProfileHeader.innerHTML = '<p style="color:#9aa4c7;">Загрузка...</p>';
+        wallPostsEl.innerHTML = '';
+        wallPostForm.classList.add('hidden');
+        apiGet('/api/users').then(function (data) {
+            var users = data.users || [];
+            var user = null;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].username.toLowerCase() === username.toLowerCase()) { user = users[i]; break; }
+            }
+            if (!user) {
+                wallProfileHeader.innerHTML = '<p style="color:#ff4d6d;">Пользователь не найден</p>';
+                return;
+            }
+            var isOwn = !!(currentUser && user.username.toLowerCase() === currentUser.username.toLowerCase());
+            renderWallProfileHeader(user, isOwn);
+            if (isOwn) {
+                wallPostForm.classList.remove('hidden');
+                wallPostText.value = '';
+                pendingWallImage = '';
+                wallPostImagePreview.innerHTML = '';
+                wallPostImageInput.value = '';
+                wallPostError.classList.remove('visible');
+            }
+            loadWallPosts(user.username, isOwn);
+        }).catch(function () {
+            wallProfileHeader.innerHTML = '<p style="color:#ff4d6d;">Ошибка загрузки</p>';
+        });
+    }
+
+    function renderWallPosts(posts, canDelete) {
+        if (!posts || posts.length === 0) {
+            wallPostsEl.innerHTML = '<p class="chat-empty">Пока нет постов</p>';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < posts.length; i++) {
+            var p = posts[i];
+            var date = p.createdAt ? new Date(p.createdAt).toLocaleString('ru-RU') : '';
+            html += '<div class="wall-post">'
+                + '<div class="wall-post-head"><div class="wall-post-avatar">' + avatarHTML(p) + '</div>'
+                + '<div><div class="wall-post-author">' + escapeHtml(p.username) + '</div>'
+                + '<div class="wall-post-date">' + date + '</div></div></div>';
+            if (p.text) html += '<div class="wall-post-text">' + escapeHtml(p.text) + '</div>';
+            if (p.image) html += '<div class="wall-post-image"><img src="' + p.image + '" alt=""></div>';
+            if (canDelete) html += '<button type="button" class="wall-post-delete" data-id="' + escapeHtml(p.id) + '">Удалить</button>';
+            html += '</div>';
+        }
+        wallPostsEl.innerHTML = html;
+        if (canDelete) {
+            var delBtns = wallPostsEl.querySelectorAll('.wall-post-delete');
+            for (var j = 0; j < delBtns.length; j++) {
+                delBtns[j].addEventListener('click', function (e) {
+                    deleteWallPost(e.currentTarget.getAttribute('data-id'));
+                });
+            }
+        }
+    }
+
+    function loadWallPosts(username, canDelete) {
+        wallPostsEl.innerHTML = '<p style="color:#9aa4c7;">Загрузка постов...</p>';
+        apiGet('/api/posts?username=' + encodeURIComponent(username)).then(function (data) {
+            renderWallPosts(data.posts || [], canDelete);
+        }).catch(function () {
+            wallPostsEl.innerHTML = '<p style="color:#ff4d6d;">Не удалось загрузить посты</p>';
+        });
+    }
+
+    function deleteWallPost(id) {
+        if (!currentUser || !id) return;
+        apiDelete('/api/posts?id=' + encodeURIComponent(id) + '&username=' + encodeURIComponent(currentUser.username))
+            .then(function () { loadWallPosts(currentUser.username, true); })
+            .catch(function () {});
+    }
+
+    wallBackBtn.addEventListener('click', function () { showPage('home'); });
+
+    wallPostImageInput.addEventListener('change', function (e) {
+        var file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (file.size > MAX_POST_IMAGE_SIZE) {
+            wallPostError.textContent = 'Файл больше 10 МБ';
+            wallPostError.classList.add('visible');
+            wallPostImageInput.value = '';
+            return;
+        }
+        wallPostError.classList.remove('visible');
+        resizeImageFit(file, POST_IMAGE_MAX_DIM, function (dataURL) {
+            if (!dataURL) {
+                wallPostError.textContent = 'Не удалось загрузить картинку';
+                wallPostError.classList.add('visible');
+                return;
+            }
+            pendingWallImage = dataURL;
+            wallPostImagePreview.innerHTML = '<img src="' + dataURL + '" alt=""><button type="button" class="wall-image-remove" id="wall-image-remove-btn">✕</button>';
+            var rm = document.getElementById('wall-image-remove-btn');
+            if (rm) rm.addEventListener('click', function () {
+                pendingWallImage = '';
+                wallPostImagePreview.innerHTML = '';
+                wallPostImageInput.value = '';
+            });
+        });
+    });
+
+    wallPostForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!currentUser) return;
+        var text = wallPostText.value.trim();
+        if (!text && !pendingWallImage) {
+            wallPostError.textContent = 'Добавь текст или картинку';
+            wallPostError.classList.add('visible');
+            return;
+        }
+        wallPostError.classList.remove('visible');
+        wallPostSubmitBtn.disabled = true;
+        wallPostSubmitBtn.textContent = 'Публикуем...';
+        apiPost('/api/posts', { username: currentUser.username, text: text, image: pendingWallImage })
+            .then(function () {
+                wallPostText.value = '';
+                pendingWallImage = '';
+                wallPostImagePreview.innerHTML = '';
+                wallPostImageInput.value = '';
+                loadWallPosts(currentUser.username, true);
+            })
+            .catch(function (e) {
+                wallPostError.textContent = e.message;
+                wallPostError.classList.add('visible');
+            })
+            .then(function () {
+                wallPostSubmitBtn.disabled = false;
+                wallPostSubmitBtn.textContent = 'Опубликовать';
+            });
+    });
+
+    function renderSearchResults(users) {
+        if (!users || users.length === 0) {
+            wallSearchResults.innerHTML = '<p class="chat-empty">Никого не найдено</p>';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < users.length; i++) {
+            var u = users[i];
+            html += '<div class="wall-search-item" data-username="' + escapeHtml(u.username) + '">'
+                + '<div class="person-avatar">' + avatarHTML(u) + '</div>'
+                + '<div class="person-info"><div class="person-name">' + escapeHtml(u.username) + '</div>'
+                + (u.handle ? '<div class="person-date">@' + escapeHtml(u.handle) + '</div>' : '')
+                + '</div></div>';
+        }
+        wallSearchResults.innerHTML = html;
+        var items = wallSearchResults.querySelectorAll('.wall-search-item');
+        for (var j = 0; j < items.length; j++) {
+            items[j].addEventListener('click', function (e) {
+                var uname = e.currentTarget.getAttribute('data-username');
+                wallSearchResults.innerHTML = '';
+                wallSearchInput.value = '';
+                if (uname) { wallViewingUsername = uname; loadWallProfile(uname); }
+            });
+        }
+    }
+
+    function runWallSearch() {
+        var q = wallSearchInput.value.trim();
+        if (!q) { wallSearchResults.innerHTML = ''; return; }
+        wallSearchResults.innerHTML = '<p style="color:#9aa4c7;">Ищем...</p>';
+        apiGet('/api/users/search?q=' + encodeURIComponent(q)).then(function (data) {
+            renderSearchResults(data.users || []);
+        }).catch(function () {
+            wallSearchResults.innerHTML = '<p style="color:#ff4d6d;">Ошибка поиска</p>';
+        });
+    }
+
+    wallSearchBtn.addEventListener('click', runWallSearch);
+    wallSearchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') { e.preventDefault(); runWallSearch(); }
+    });
+
+    /* ---------- Личные сообщения ---------- */
+
+    function openDm(user, returnTo) {
+        if (!currentUser || !user) return;
+        dmPartner = user;
+        dmReturnTo = returnTo || 'wall';
+        showPage('dm');
+        renderDmHeader();
+        startDmPolling();
+    }
+
+    function renderDmHeader() {
+        if (!dmPartner) return;
+        var handleLine = dmPartner.handle ? '@' + escapeHtml(dmPartner.handle) : '';
+        dmPartnerInfo.innerHTML = '<div class="wall-profile-avatar">' + avatarHTML(dmPartner) + '</div>'
+            + '<div><div class="wall-profile-name">' + escapeHtml(dmPartner.username) + '</div>'
+            + (handleLine ? '<div class="wall-profile-handle">' + handleLine + '</div>' : '') + '</div>';
+    }
+
+    function renderDmMessages(messages) {
+        if (!messages || messages.length === 0) {
+            dmMessagesEl.innerHTML = '<p class="chat-empty">Напиши первое сообщение</p>';
+            return;
+        }
+        var nearBottom = dmMessagesEl.scrollTop + dmMessagesEl.clientHeight >= dmMessagesEl.scrollHeight - 60;
+        var html = '';
+        for (var i = 0; i < messages.length; i++) {
+            var m = messages[i];
+            var own = !!(currentUser && m.from.toLowerCase() === currentUser.username.toLowerCase());
+            var authorUser = own ? currentUser : dmPartner;
+            html += '<div class="chat-msg' + (own ? ' own' : '') + '">'
+                + '<div class="chat-msg-avatar">' + avatarHTML(authorUser) + '</div>'
+                + '<div class="chat-msg-body">'
+                + '<div class="chat-msg-meta">' + formatChatTime(m.createdAt) + '</div>'
+                + '<div class="chat-msg-bubble">' + escapeHtml(m.text) + '</div>'
+                + '</div></div>';
+        }
+        dmMessagesEl.innerHTML = html;
+        if (nearBottom) dmMessagesEl.scrollTop = dmMessagesEl.scrollHeight;
+    }
+
+    function loadDmMessages(forceScroll) {
+        if (!currentUser || !dmPartner) return;
+        apiGet('/api/dm?user=' + encodeURIComponent(currentUser.username) + '&with=' + encodeURIComponent(dmPartner.username)).then(function (data) {
+            var messages = data.messages || [];
+            var newLast = messages.length ? messages[messages.length - 1].id : null;
+            if (!forceScroll && newLast === dmLastMessageId) return;
+            dmLastMessageId = newLast;
+            renderDmMessages(messages);
+            if (forceScroll) dmMessagesEl.scrollTop = dmMessagesEl.scrollHeight;
+        }).catch(function () {
+            dmMessagesEl.innerHTML = '<p class="chat-empty" style="color:#ff4d6d;">Не удалось загрузить сообщения</p>';
+        });
+    }
+
+    function startDmPolling() {
+        stopDmPolling();
+        dmLastMessageId = null;
+        loadDmMessages(true);
+        loadUnreadCount();
+        dmPollTimer = setInterval(function () { loadDmMessages(false); }, 3000);
+    }
+
+    function stopDmPolling() {
+        if (dmPollTimer) {
+            clearInterval(dmPollTimer);
+            dmPollTimer = null;
+        }
+    }
+
+    dmBackBtn.addEventListener('click', function () {
+        loadUnreadCount();
+        if (dmReturnTo === 'messages') {
+            showPage('messages');
+            loadMessagesList();
+        } else if (dmPartner) {
+            showPage('wall');
+            loadWallProfile(dmPartner.username);
+        } else {
+            showPage('home');
+        }
+    });
+
+    dmForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!currentUser || !dmPartner) return;
+        var text = dmInput.value.trim();
+        if (!text) return;
+        dmError.classList.remove('visible');
+        dmSendBtn.disabled = true;
+        apiPost('/api/dm', { from: currentUser.username, to: dmPartner.username, text: text })
+            .then(function () {
+                dmInput.value = '';
+                loadDmMessages(true);
+            })
+            .catch(function (e) {
+                dmError.textContent = e.message;
+                dmError.classList.add('visible');
+            })
+            .then(function () {
+                dmSendBtn.disabled = false;
+                dmInput.focus();
+            });
+    });
+
+    /* ---------- Список диалогов (Сообщения) ---------- */
+
+    function formatMessageTime(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        var now = new Date();
+        if (d.toDateString() === now.toDateString()) {
+            var hh = ('0' + d.getHours()).slice(-2);
+            var mm = ('0' + d.getMinutes()).slice(-2);
+            return hh + ':' + mm;
+        }
+        return d.toLocaleDateString('ru-RU');
+    }
+
+    function renderMessagesList(conversations) {
+        if (!conversations || conversations.length === 0) {
+            messagesListEl.innerHTML = '<p class="chat-empty">Пока нет сообщений</p>';
+            return;
+        }
+        var html = '';
+        for (var i = 0; i < conversations.length; i++) {
+            var c = conversations[i];
+            var isUnread = c.unread > 0;
+            var prefix = (currentUser && c.lastFrom && c.lastFrom.toLowerCase() === currentUser.username.toLowerCase()) ? 'Вы: ' : '';
+            html += '<div class="message-row' + (isUnread ? ' unread' : '') + '" data-index="' + i + '">'
+                + '<div class="message-row-avatar">' + avatarHTML(c) + '</div>'
+                + '<div class="message-row-body">'
+                + '<div class="message-row-top"><div class="message-row-name">' + escapeHtml(c.username) + '</div>'
+                + '<div class="message-row-time">' + formatMessageTime(c.lastAt) + '</div></div>'
+                + '<div class="message-row-preview">' + escapeHtml(prefix + c.lastText) + '</div>'
+                + '</div>';
+            if (isUnread) html += '<div class="message-row-unread-count">' + (c.unread > 99 ? '99+' : c.unread) + '</div>';
+            html += '</div>';
+        }
+        messagesListEl.innerHTML = html;
+        var rows = messagesListEl.querySelectorAll('.message-row');
+        for (var j = 0; j < rows.length; j++) {
+            rows[j].addEventListener('click', function (e) {
+                var idx = parseInt(e.currentTarget.getAttribute('data-index'), 10);
+                var c = conversations[idx];
+                if (c) openDm({ username: c.username, avatar: c.avatar, handle: c.handle }, 'messages');
+            });
+        }
+    }
+
+    function loadMessagesList() {
+        if (!currentUser) return;
+        messagesListEl.innerHTML = '<p style="color:#9aa4c7;">Загрузка...</p>';
+        apiGet('/api/dm/conversations?user=' + encodeURIComponent(currentUser.username)).then(function (data) {
+            renderMessagesList(data.conversations || []);
+        }).catch(function () {
+            messagesListEl.innerHTML = '<p style="color:#ff4d6d;">Не удалось загрузить сообщения</p>';
+        });
+    }
+
+    function updateUnreadBadge(count) {
+        var badges = [navMessagesBadge, homeMessagesBadge];
+        for (var i = 0; i < badges.length; i++) {
+            if (!badges[i]) continue;
+            if (count > 0) {
+                badges[i].textContent = count > 99 ? '99+' : String(count);
+                badges[i].classList.remove('hidden');
+            } else {
+                badges[i].classList.add('hidden');
+            }
+        }
+    }
+
+    function loadUnreadCount() {
+        if (!currentUser) return;
+        apiGet('/api/dm/unread-count?user=' + encodeURIComponent(currentUser.username)).then(function (data) {
+            updateUnreadBadge(data.count || 0);
+        }).catch(function () {});
+    }
+
+    function startUnreadPolling() {
+        stopUnreadPolling();
+        loadUnreadCount();
+        unreadPollTimer = setInterval(loadUnreadCount, 10000);
+    }
+
+    function stopUnreadPolling() {
+        if (unreadPollTimer) {
+            clearInterval(unreadPollTimer);
+            unreadPollTimer = null;
+        }
+        updateUnreadBadge(0);
+    }
+
+    var eyes = document.querySelectorAll('.eye');
+    for (var i = 0; i < eyes.length; i++) {
+        (function (btn) {
+            btn.addEventListener('click', function () {
+                var inp = document.getElementById(btn.dataset.target);
+                if (!inp) return;
+                inp.type = inp.type === 'password' ? 'text' : 'password';
+            });
+        })(eyes[i]);
+    }
+
+    form.addEventListener('input', function (e) {
+        if (e.target.classList.contains('invalid')) e.target.classList.remove('invalid');
+        if (errorEl.classList.contains('visible')) errorEl.classList.remove('visible');
+    });
+
+    function init() {
+        var session = getSession();
+        if (session) {
+            apiGet('/api/users').then(function (data) {
+                var found = null;
+                for (var i = 0; i < data.users.length; i++) {
+                    if (data.users[i].username === session) { found = data.users[i]; break; }
+                }
+                if (found) {
+                    currentUser = found;
+                    updateHeader(found); updateHome(found); updateProfile(found);
+                    showPage('home');
+                    startUnreadPolling();
+                } else {
+                    clearSession(); updateHeader(null); setMode('register'); showPage('auth');
+                }
+            }).catch(function () {
+                clearSession(); updateHeader(null); setMode('register'); showPage('auth');
+            });
+            return;
+        }
+        updateHeader(null); setMode('register'); showPage('auth');
+    }
+
+    setMode('register');
+    init();
+})();
+</script>
+
+</body>
+</html>
